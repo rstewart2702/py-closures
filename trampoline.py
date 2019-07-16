@@ -22,6 +22,44 @@ def ft(p1,p2):
         rv=rv()
     return pi1, pi2
 
+def ftt(p1,p2):
+    """
+This is a function designed to be trampoline-able.
+Returns a reference to a closure designed to be given
+to the trampoline() function.
+"""
+    pi1,pi2 = p1,p2
+    def fti(p1,p2):
+        nonlocal pi1,pi2
+        if(p2==4):
+            return p1,p2
+        pi1,pi2=p1+1,p2+2
+        return ftrc
+    #
+    def ftrc():
+        return fti(pi1,pi2)
+    #
+    # Return a reference to a closure which invokes
+    # the function-which-would-have-used-tail-recursion.
+    return ftrc
+
+def trampoline(f):
+    """
+This is designed to be applied to a trampoline-able function.
+"""
+    rv = f()
+    while(callable(rv)):
+        rv=rv()
+    return rv
+# So, an example of invoking the above would be:
+#   trampoline(ftt(0,-1982))
+# which returns:
+#   (994, 4)
+# whereas the recursive version,
+#   ftcr(0,-1982)
+# would blow up Python's call stack...
+
+
 ##    def ftc(p1p,p2p):
 ##        pi1=p1+1; pi2=p2+2
 ##        return fti(pi1,pi2)
