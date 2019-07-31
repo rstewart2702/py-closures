@@ -64,6 +64,128 @@ This is designed to be applied to a trampoline-able function.
 ##        pi1=p1+1; pi2=p2+2
 ##        return fti(pi1,pi2)
 
+"""
+So,
+we'd like a decorator to take away some of the syntactical pain.
+
+So that:
+  @trampoline2
+  def ft(p1,p2) ....
+would be nice.
+
+What about 
+
+"""
+
+def trampolinized(f):
+    # fi = f()
+    #
+    def innerTrampoline():
+        # r = fi()
+        r = f()
+        while(callable(r)):
+            r = r()
+        return r
+    #
+    return innerTrampoline
+
+
+def ftt1(p1,p2):
+    pi1,pi2 = p1,p2
+    #
+    def fti(p1,p2):
+        nonlocal pi1,pi2
+        if(p2==4):
+            return p1,p2
+        pi1,pi2=p1+1,p2+2
+        return ftrc
+    def ftrc():
+        return fti(pi1,pi2)
+    return trampolinized(ftrc)
+
+
+def ftt2(p1,p2):
+    pi1,pi2 = p1,p2
+    #
+    def fti(p1,p2):
+        nonlocal pi1,pi2
+        if(p2==4):
+            return p1,p2
+        pi1,pi2=p1+1,p2+2
+        return ftrc
+    #
+    def ftrc():
+        return fti(pi1,pi2)
+    #
+    # This shows how there is potential to use a decorator in order
+    # to "trampoline-ize" this "tail-recursive" process, in a
+    # rather general fashion:
+    @trampolinized
+    def fi():
+        return ftrc
+    #
+    return fi()
+    
+def ftt3(p1,p2):
+    pi1,pi2 = p1,p2
+    #
+    def fti(p1,p2):
+        nonlocal pi1,pi2
+        if(p2==4):
+            return p1,p2
+        pi1,pi2=p1+1,p2+2
+        return ftrc
+    #
+    def ftrc():
+        return fti(pi1,pi2)
+    #
+    return trampolinized(ftrc)()
+
+
+
+
+
+def trampoline2(f):
+    fi = f()
+    #
+    def innerTrampoline():
+        r = fi()
+        while(callable(r)):
+            r = r()
+        return r
+    #
+    return innerTrampoline
+
+##f1 = ftt(0,1982)
+##@trampoline
+##def fttid():
+##    return f1
+
+##@trampoline2
+##def ftt1o(p1,p2):
+##    return ftt(p1,p2)
+##
+##@trampoline2
+##def ftt1o1(**kwargs):
+##    pi1=kwargs['p1']; pi2=kwargs['p2']
+##    #
+##    def fti(p1,p2):
+##        nonlocal pi1, pi2
+##        if(p2==4):
+##            return p1,p2
+##        pi1,pi2=p1+1,p2+2
+##        return ftrc
+##    #
+##    def ftrc():
+##        return fti(pi1,pi2)
+##    #
+##    return ftrc
+
+
+##@trampoline2(**kwargs)
+##def ftt1(**kwargs):
+##    return ftt(kwargs['p1'],kwargs['p2'])
+
 def ftr(p1,p2):
     if (p2 == 4):
         return (p1,p2)
