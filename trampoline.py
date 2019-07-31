@@ -141,6 +141,21 @@ def ftt3(p1,p2):
     #
     return trampolinized(ftrc)()
 
+def ftt4(p1,p2):
+    pi1,pi2 = p1,p2
+    #
+    def fti(p1,p2):
+        nonlocal pi1,pi2
+        if(p2==4):
+            return p1,p2
+        pi1,pi2=p1+1,p2+2
+        return ftrc
+    #
+    @trampolinized
+    def ftrc():
+        return fti(pi1,pi2)
+    #
+    return ftrc()
 
 
 
