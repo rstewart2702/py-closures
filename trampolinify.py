@@ -44,14 +44,16 @@ def ftt1(p1,p2):
 def trampolinify2(f):
     print("Trampolinization taking place!")
     print("Trampolinizing ", f.__name__)
-    def innerTrampoline(fi):
-        r = fi()
+    r = f
+    def innerTrampoline():
+        nonlocal r
+        # r = f
         while(callable(r)):
             r = r()
         return r
     #
     def invokeTramp():
-        innerTrampoline(f)
+        return innerTrampoline()
     #
     return invokeTramp
 
