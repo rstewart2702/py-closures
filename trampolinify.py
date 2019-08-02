@@ -44,7 +44,7 @@ def ftt1(p1,p2):
 def trampolinify2(f):
     print("Trampolinization taking place!")
     print("Trampolinizing ", f.__name__)
-    r = f
+    r = f()
     def innerTrampoline():
         nonlocal r
         # r = f
@@ -59,15 +59,17 @@ def trampolinify2(f):
 
 def ftt2(p1,p2):
     pi1,pi2=p1,p2
-    def fti(p1,p2):
-        nonlocal pi1,pi2
-        if (pi2==4):
-            return p1,p2
-        pi1,pi2=p1+1,p2+2
-        return fi
     @trampolinify2
     def fi():
-        return fti(pi1,pi2)
+        def fti(p1,p2):
+            nonlocal pi1,pi2
+            if (pi2==4):
+                return p1,p2
+            pi1,pi2=p1+1,p2+2
+            return fi
+        def fi():
+            return fti(pi1,pi2)
+        return fi
     return fi()
 
 
