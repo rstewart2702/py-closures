@@ -81,6 +81,7 @@ def trampolinized(f):
     # fi = f()
     #
     print("Trampolinization taking place!")
+    print("Trampolinifiying function: ", f.__name__)
     def innerTrampoline():
         # r = fi()
         r = f()
@@ -104,7 +105,7 @@ def ftt1(p1,p2):
         return fti(pi1,pi2)
     return trampolinized(ftrc)
 
-def trampolinify(f):
+# def trampolinify(f):
     
 
 def ftt2(p1,p2):
