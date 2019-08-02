@@ -40,9 +40,29 @@ Decorators are:
     decorator.
     It emits a function-body/lambda that is bound to the name in the
     following "def."
-    
+    The 
   + it results in a function which is designed to accept/receive
     another function/lambda?
   + it receives a 
+
+@decorator
+def f():
+    blah-blah-blah...
+is equivalent to:
+def f():
+    blah-blah-blah...
+f = decorator(f)
+
+The decorator is applied to the lambda it is handed, and the decorator,
+in turn yields/returns a lambda.
+
+So why can't the decorator yield a function which accepts arguments?
+
+Ah, I think I am "going the wrong direction," eh?  Perhaps I was on the right
+track to begin with, by wrapping a combinator around the tail-recursive
+function in such a way that internally, it uses the trampolining
+combinator/decorator?
+
+
 
 """
