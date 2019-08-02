@@ -22,6 +22,53 @@ def ftt(p1,p2):
         return fti(pi1,pi2)
     return fi
 
+def trampoline(f):
+    r = f()
+    while(callable(r)):
+        r = r()
+    return r
+
+def ftt1(p1,p2):
+    pi1,pi2=p1,p2
+    def fti(p1,p2):
+        nonlocal pi1,pi2
+        if (pi2==4):
+            return p1,p2
+        pi1,pi2=p1+1,p2+2
+        return fi
+#     @trampolinify
+    def fi():
+        return fti(pi1,pi2)
+    return trampoline(fi)
+
+def trampolinify2(f):
+    print("Trampolinization taking place!")
+    print("Trampolinizing ", f.__name__)
+    def innerTrampoline(fi):
+        r = fi()
+        while(callable(r)):
+            r = r()
+        return r
+    #
+    def invokeTramp():
+        innerTrampoline(f)
+    #
+    return invokeTramp
+
+def ftt2(p1,p2):
+    pi1,pi2=p1,p2
+    def fti(p1,p2):
+        nonlocal pi1,pi2
+        if (pi2==4):
+            return p1,p2
+        pi1,pi2=p1+1,p2+2
+        return fi
+    @trampolinify2
+    def fi():
+        return fti(pi1,pi2)
+    return fi()
+
+
 @trampolinify
 def fmaker(p1,p2):
     def fmakeri():
